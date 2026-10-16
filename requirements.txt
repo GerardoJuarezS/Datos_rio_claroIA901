@@ -1,0 +1,6 @@
+streamlit
+openai
+azure-ai-formrecognizer
+azure-ai-textanalytics
+azure-cognitiveservices-speech
+pandas
