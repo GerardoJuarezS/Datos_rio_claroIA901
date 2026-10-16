@@ -1,0 +1,6 @@
+SKU,Nombre_Estandar,Nombres_Anteriores_Sucursales,Precio_MXN,Stock_Guadalajara,Stock_Zapopan,Stock_Leon,Stock_Queretaro,Stock_Aguascalientes,Ventas_Mes_Unificadas_MXN
+SKU-CLO-001,Cloro Blanqueador 1 Litro,"Cloro 1L, CLORO LITRO, Blanqueador 1000ml",18.50,450,320,180,290,410,45200.00
+SKU-DET-002,Detergente Industrial Multiusos 5L,"Jabon 5L, Detergente 5 Litros, Multiusos Ind",145.00,120,85,90,110,95,87000.00
+SKU-DES-003,Desinfectante Pino Aromático 20L,"Pino 20L, Desinfectante Bidon, Aroma Pino",310.00,60,40,25,55,70,93000.00
+SKU-PAP-004,Papel Higiénico Institucional Caja 12 Rollos,"Papel Jumbo, Caja Higienico 12, Rollo Hotel",420.00,200,150,30,180,140,126000.00
+SKU-JAB-005,Jabón Líquido para Manos Antibacterial 4L,"Jabon Manos 4L, Antibacterial Galon",95.00,300,210,175,240,190,66500.00
