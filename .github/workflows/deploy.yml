@@ -1,0 +1,144 @@
+# Despliegue continuo a Azure App Service (Linux) con GitHub Actions.
+#
+# CÓMO USARLO
+#   1. Suba el proyecto a un repositorio de GitHub (el archivo .gitignore ya
+#      excluye .env, así que no se filtran sus credenciales).
+#   2. En Azure Portal: App Service → Centro de implementación → GitHub.
+#      Seleccione el repositorio y la rama `main`.
+#   3. Descargue el perfil de publicación desde App Service → Información
+#      general → Descargar perfil de publicación, y guárdelo como el secreto
+#      AZURE_WEBAPP_PUBLISH_PROFILE en GitHub (Settings → Secrets → Actions).
+#
+# UN DETALLE IMPORTANTE SOBRE LAS DEPENDENCIAS
+#
+# En App Service Linux con una imagen "Blessed" (la del desplegable Stack, como
+# PYTHON:3.11) las dependencias NO se instalan subiendo una carpeta de paquetes.
+# Lo hace Oryx durante el despliegue: detecta requirements.txt, crea el entorno
+# virtual `antenv` y ejecuta `pip install`. Para eso hace falta la App Setting
+# SCM_DO_BUILD_DURING_DEPLOYMENT=true, que ya configura tools/provision_azure.py.
+#
+# Antes este archivo instalaba con:
+#     pip install --target=".python_packages/lib/site-packages" -r requirements.txt
+# Ese mecanismo es el de App Service en WINDOWS. En Linux, Oryx no añade esa
+# carpeta al sys.path, así que la aplicación fallaba con
+# "ModuleNotFoundError: No module named 'streamlit'" aunque el despliegue
+# dijera que había terminado bien.
+#
+# Aquí las dependencias se instalan en el entorno del runner SOLO para poder
+# ejecutar las comprobaciones antes de desplegar. En el servidor las instala
+# Oryx a partir de requirements.txt.
+
+name: Desplegar Río Claro AI-901
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: rioclaro-ai901
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  verificar-y-desplegar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Instalar dependencias (para poder verificar)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # ---------------------------------------------------------------
+      # Las comprobaciones se ejecutan ANTES de desplegar. Si algo falla,
+      # no se publica una versión rota.
+      # ---------------------------------------------------------------
+
+      - name: Verificar la lógica del negocio
+        run: python tools/autotest.py
+
+      - name: Verificar que todo el código compila
+        run: |
+          python -m py_compile app.py rio_claro.py
+          python -m py_compile tools/*.py
+
+      - name: Verificar que requirements.txt esté completo
+        run: python tools/verificar_dependencias.py
+
+      - name: Verificar el script de provisión
+        run: python tools/probar_provision.py
+
+      - name: Verificar la estructura del proyecto
+        # Comprueba que los datos y las facturas de prueba se despliegan: sin
+        # ellos la aplicación arranca pero el asistente no responde.
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          raiz = Path(".")
+          obligatorios = [
+              "app.py", "rio_claro.py", "requirements.txt", "startup.sh",
+              ".streamlit/config.toml",
+              "data/catalogo_unificado.csv",
+              "data/politicas_y_pedidos_activos.txt",
+              "data/historial_quejas.jsonl",
+              "samples/factura_limpia.pdf",
+              "samples/factura_final2.pdf",
+          ]
+          faltan = [f for f in obligatorios if not (raiz / f).exists()]
+          if faltan:
+              sys.exit("Faltan archivos que la aplicación necesita: " + ", ".join(faltan))
+          print(f"Los {len(obligatorios)} archivos necesarios están presentes.")
+          PY
+
+      - name: Comprobar que no se filtran credenciales
+        # Si alguien sube un .env por descuido, el despliegue se detiene.
+        run: |
+          if git ls-files --error-unmatch .env 2>/dev/null; then
+            echo "ERROR: el archivo .env está en el repositorio."
+            echo "Contiene claves de Azure: elimínelo del control de versiones."
+            exit 1
+          fi
+          echo "El archivo .env no está en el repositorio."
+
+      # ---------------------------------------------------------------
+      # Despliegue. Oryx instalará requirements.txt en el servidor.
+      # ---------------------------------------------------------------
+
+      - name: Desplegar en App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
+
+      # ---------------------------------------------------------------
+      # Kudu (SCM) tarda un poco en mostrar el estado. No se espera la
+      # aplicación aquí porque Oryx reconstruye el entorno tras el despliegue
+      # y puede tardar un par de minutos.
+      # ---------------------------------------------------------------
+
+      - name: Recordatorio de verificación
+        run: |
+          echo "=========================================================="
+          echo " Despliegue enviado."
+          echo ""
+          echo " Abra la aplicación (la primera carga tarda 1-2 minutos):"
+          echo "   https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
+          echo ""
+          echo " Si muestra 'Application Error', revise los registros:"
+          echo "   az webapp log tail -n ${{ env.AZURE_WEBAPP_NAME }} -g rg-rio-claro-ai901"
+          echo ""
+          echo " Las dos causas más frecuentes:"
+          echo "   * El puerto no coincide (revise la App Setting PORT)"
+          echo "   * Oryx no instaló las dependencias (SCM_DO_BUILD_DURING_DEPLOYMENT)"
+          echo "=========================================================="

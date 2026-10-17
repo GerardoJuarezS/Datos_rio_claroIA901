@@ -1,0 +1,37 @@
+# CATÁLOGO UNIFICADO RÍO CLARO — FUENTE ÚNICA DE VERDAD
+# Generado por el asistente AI-901 a partir de los 5 Excel de sucursal.
+# Este es el ÚNICO archivo que el agente puede citar para existencias y precios.
+#
+# Regla de negocio: cuando dos sucursales reportan el mismo producto con claves
+# distintas, se unifica por nombre normalizado. El precio de lista oficial es el
+# más bajo de la red (decisión de Don Ernesto: "un cliente no debe pagar más por
+# comprar en la sucursal equivocada" — esto es EVIDENCIA DE EQUIDAD).
+#
+# Columnas:
+#   producto_id            clave canónica nueva
+#   nombre_oficial         nombre normalizado
+#   claves_historicas      todas las claves que usaban las sucursales
+#   unidad                 unidad de venta
+#   precio_lista_oficial   MXN, el más bajo de la red
+#   existencia_<sucursal>  unidades disponibles por sucursal
+#   fuente_original        de qué archivo salió cada dato
+
+producto_id,nombre_oficial,claves_historicas,unidad,precio_lista_oficial,existencia_Guadalajara,existencia_Zapopan,existencia_Leon,existencia_Queretaro,existencia_Aguascalientes,fuente_original
+CLO-1L,Cloro blanqueador 1 L,"CL-1L | CLORO-LITRO | CLORO LITRO | Cloro 1L",botella 1 L,37.00,450,320,180,290,410,"Guadalajara.csv | Zapopan.csv | Leon.csv | Queretaro.csv | Aguascalientes.csv"
+PAP-500,Papel higiénico institucional 500 hojas,"PH-500 | PH500 | Papel hig 500h | Papel higienico 500 hojas",paquete 500 hojas,110.00,900,640,120,50,380,"Guadalajara.csv | Zapopan.csv | Leon.csv | Queretaro.csv | Aguascalientes.csv"
+JAB-1L,Jabón de manos 1 L,"JD-1L | JAB-1L | JABON 1L | Jabon manos 1 litro",botella 1 L,52.00,300,410,260,340,190,"Guadalajara.csv | Zapopan.csv | Leon.csv | Queretaro.csv | Aguascalientes.csv"
+LIM-MUL,Limpiador multiusos limón 1 L,"LM-LIM | LIM-LIM | Limpiador multiusos limon",botella 1 L,45.00,220,180,0,410,0,"Guadalajara.csv | Zapopan.csv | Queretaro.csv"
+FAB-3L,Fabuloso 3 L,"FB-3L | Fabuloso 3 litros | Fabuloso 3L",garrafa 3 L,87.00,150,0,95,210,130,"Guadalajara.csv | Leon.csv | Queretaro.csv | Aguascalientes.csv"
+
+# ---------------------------------------------------------------------------
+# NOTAS DE CALIDAD DE DATOS (para el documento de entrega)
+# ---------------------------------------------------------------------------
+# 1. El mismo producto tenía hasta 4 claves distintas (Cloro 1L):
+#       CL-1L (Guadalajara), CLORO-LITRO (Zapopan), CLORO LITRO (León), CL-1L (Querétaro)
+#    Sin esta unificación el asistente daría respuestas contradictorias.
+# 2. LIM-MUL y FAB-3L no existen en León ni en Aguascalientes (0 = no manejado,
+#    no es lo mismo que "agotado"). El asistente debe distinguirlo.
+# 3. El precio variaba hasta 8% entre sucursales para el mismo producto.
+# 4. Determinismo: el precio oficial es el MÍNIMO de la red, no el promedio.
+#    Se eligió mínimo porque es verificable por el cliente y no castiga a la
+#    sucursal con mejor información.

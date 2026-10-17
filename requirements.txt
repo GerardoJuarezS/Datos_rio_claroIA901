@@ -1,6 +1,49 @@
-streamlit
-openai
-azure-ai-formrecognizer
-azure-ai-textanalytics
-azure-cognitiveservices-speech
-pandas
+# =============================================================================
+# Distribuidora Río Claro — Portal IA
+# Proyecto integrador AI-901: Microsoft Azure AI Fundamentals
+#
+# Instalar:  pip install -r requirements.txt
+# =============================================================================
+
+# --- Interfaz web -----------------------------------------------------------
+streamlit>=1.40
+
+# --- Núcleo de los SDK de Azure ---------------------------------------------
+# app.py importa azure.core.credentials DIRECTAMENTE (para AzureKeyCredential),
+# así que se declara de forma explícita aunque hoy llegue como dependencia
+# transitiva de azure-identity. Si algún paquete dejara de arrastrarlo, la
+# aplicación no arrancaría y el error sería difícil de relacionar con esto.
+azure-core>=1.30
+
+# --- Microsoft Foundry: IA generativa, agentes, visión, imágenes ------------
+# Este es el SDK vigente que evalúa AI-901. Reemplaza a openai.AzureOpenAI.
+azure-ai-projects>=2.3.0
+azure-identity>=1.17
+
+# --- Extracción de información (Content Understanding en Foundry Tools) -----
+# Cubre documentos, imágenes, audio y vídeo con una sola API.
+# Reemplaza a azure-ai-formrecognizer (Document Intelligence), que la guía
+# vigente del examen AI-901 ya no menciona.
+azure-ai-contentunderstanding>=1.1.0
+
+# --- Análisis de texto (Azure AI Language en Foundry Tools) -----------------
+azure-ai-textanalytics>=5.3.0
+
+# --- Voz (Azure Speech en Foundry Tools) ------------------------------------
+azure-cognitiveservices-speech>=1.40
+
+# --- Seguridad: lectura de secretos con identidad administrada --------------
+azure-keyvault-secrets>=4.8
+
+# --- Manejo de datos --------------------------------------------------------
+pandas>=2.2
+
+# --- Generación de las facturas de prueba -----------------------------------
+# El módulo se importa como `PIL`, pero el paquete se llama Pillow. Esa
+# diferencia hace que sea fácil olvidarlo al escribir requirements.txt.
+# Lo usa tools/generar_facturas.py, que se despliega con el proyecto y puede
+# ejecutarse desde la consola SSH de App Service.
+Pillow>=10.0
+
+# NOTA: no se incluye python-dotenv porque app.py trae su propio lector de
+# .env (función _cargar_dotenv), para reducir dependencias.

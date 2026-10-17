@@ -1,0 +1,52 @@
+# Configuración de Streamlit para el proyecto Río Claro AI-901.
+#
+# developmentMode debe estar en false: en modo desarrollo Streamlit espera que
+# el frontend de Vite sirva la interfaz por su cuenta, y entonces la opción
+# server.port es rechazada con el error
+#     "server.port does not work when global.developmentMode is true"
+
+[global]
+developmentMode = false
+
+[server]
+port = 8000
+address = "0.0.0.0"
+headless = true
+
+# SEGURIDAD (principio de Privacidad y seguridad).
+# NO se pone enableCORS = false. Esa opción le dice a Streamlit que no limite
+# el acceso entre orígenes y acepta conexiones WebSocket desde cualquier sitio,
+# lo que expone la aplicación. En su lugar:
+#   * enableCORS = true  -> Streamlit solo acepta los orígenes de la lista
+#   * corsAllowedOrigins -> solo localhost y el dominio real de App Service
+#   * enableXsrfProtection = true (por defecto) -> protege las cargas de archivo
+#   * allowedHosts -> limita los nombres de host aceptados en el WebSocket
+enableCORS = true
+corsAllowedOrigins = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8899",
+    "http://127.0.0.1:8899",
+    "https://*.azurewebsites.net",
+]
+enableXsrfProtection = true
+allowedHosts = [
+    "localhost",
+    "127.0.0.1",
+    "*.azurewebsites.net",
+]
+maxUploadSize = 50
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#0f6e9e"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f2f5f8"
+textColor = "#1b2733"
+
+[client]
+showErrorDetails = true
+toolbarMode = "minimal"

@@ -1,0 +1,74 @@
+# =============================================================================
+# .gitignore — Proyecto Río Claro AI-901
+# =============================================================================
+
+# --- SECRETOS: lo más importante ---------------------------------------------
+# NUNCA suba el archivo .env. Contiene las claves de su suscripción de Azure.
+# Si se filtra a un repositorio público, cualquiera puede gastar su crédito.
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+secrets.json
+local.settings.json
+
+# --- Entornos virtuales ------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# --- Dependencias instaladas localmente (no se versionan) --------------------
+# .libs se usó para probar el proyecto sin tocar el Python del sistema.
+.libs/
+.pipcache/
+
+# --- Caché de Python ---------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Paquetes de despliegue de Azure App Service -----------------------------
+# Oryx descarga las dependencias durante el despliegue; no se versionan.
+.python_packages/
+app.zip
+*.zip
+
+# --- Herramientas y editores ------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# --- Pruebas y cobertura ----------------------------------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Registros y salidas de consola ------------------------------------------
+*.log
+*.out
+*.err
+
+# --- Archivos temporales de trabajo -------------------------------------------
+# Los scripts de diagnóstico y captura se llaman _*.py y generan _*.png.
+# No forman parte del proyecto: son andamios de una sesión de trabajo.
+_*.py
+_*.png
+_*.txt
+
+# --- Paquete de despliegue ----------------------------------------------------
+deploy.zip
+app.zip
+
+# NOTA: la carpeta docs/capturas/ SÍ se versiona, porque forma parte del
+# documento de entrega obligatorio (el enunciado exige capturas del prototipo).

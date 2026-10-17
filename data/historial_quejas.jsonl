@@ -1,0 +1,37 @@
+# HISTORIAL CENTRAL DE QUEJAS Y CONSULTAS — RÍO CLARO
+# Antes: WhatsApp de cada vendedor, llamadas y correos sueltos, sin registro.
+# Ahora: una línea JSON por evento. Este archivo es la evidencia del principio
+# de Transparencia y de Rendición de cuentas (todo queda registrado).
+
+{"id":"Q-001","fecha":"2026-09-22","cliente":"Hotel Gran Plaza León","sucursal_receptora":"León","sucursal_origen":"Querétaro","canal":"teléfono","mensaje":"Llevo 4 llamadas preguntando por las cajas de papel higiénico y nadie me contesta.","sentimiento":"negative","prioridad":"urgente","resuelto":true,"dias_sin_resolver":11}
+{"id":"Q-002","fecha":"2026-09-24","cliente":"Hotel Gran Plaza León","sucursal_receptora":"León","sucursal_origen":"Querétaro","canal":"whatsapp","mensaje":"Sigo esperando el pedido de papel higiénico, es la cuarta vez que escribo.","sentimiento":"negative","prioridad":"urgente","resuelto":true,"dias_sin_resolver":12}
+{"id":"Q-003","fecha":"2026-09-27","cliente":"Hotel Gran Plaza León","sucursal_receptora":"León","sucursal_origen":"Querétaro","canal":"correo","mensaje":"Nadie responde en la sucursal. Necesito saber si el pedido ya salió o no.","sentimiento":"negative","prioridad":"urgente","resuelto":false,"dias_sin_resolver":19}
+{"id":"Q-004","fecha":"2026-10-05","cliente":"Hotel Gran Plaza León","sucursal_receptora":"León","sucursal_origen":"Querétaro","canal":"teléfono","mensaje":"Nos cobraron el cloro más caro que en la sucursal de al lado, no es justo que el precio cambie según quién atiende.","sentimiento":"negative","prioridad":"urgente","resuelto":false,"dias_sin_resolver":11}
+{"id":"Q-005","fecha":"2026-09-24","cliente":"Restaurante Los Arcos","sucursal_receptora":"Guadalajara","sucursal_origen":"Guadalajara","canal":"whatsapp","mensaje":"Nadie contesta en la sucursal Guadalajara sobre nuestro pedido.","sentimiento":"negative","prioridad":"urgente","resuelto":false,"dias_sin_resolver":22}
+{"id":"Q-006","fecha":"2026-10-01","cliente":"Escuela Secundaria Técnica 12","sucursal_receptora":"Zapopan","sucursal_origen":"Zapopan","canal":"correo","mensaje":"¿Me pueden confirmar el precio del Fabuloso de 3 litros? Quiero comparar con lo que nos cobraron.","sentimiento":"neutral","prioridad":"normal","resuelto":true,"dias_sin_resolver":1}
+{"id":"Q-007","fecha":"2026-10-02","cliente":"Pequeña Tienda Doña Chelo","sucursal_receptora":"León","sucursal_origen":"León","canal":"whatsapp","mensaje":"Excelente atención de la señorita del mostrador, llegó todo completo y a tiempo. Muchas gracias.","sentimiento":"positive","prioridad":"normal","resuelto":true,"dias_sin_resolver":0}
+{"id":"Q-008","fecha":"2026-10-08","cliente":"Restaurante Los Arcos","sucursal_receptora":"Guadalajara","sucursal_origen":"Guadalajara","canal":"correo","mensaje":"Solicito la política de devoluciones vigente, me dieron tres versiones distintas.","sentimiento":"neutral","prioridad":"media","resuelto":true,"dias_sin_resolver":3}
+{"id":"Q-009","fecha":"2026-10-10","cliente":"Escuela Secundaria Técnica 12","sucursal_receptora":"Zapopan","sucursal_origen":"Zapopan","canal":"whatsapp","mensaje":"El pedido llegó incompleto, faltan 4 garrafas de Fabuloso. Necesito solución hoy porque es para el evento del sábado.","sentimiento":"negative","prioridad":"urgente","resuelto":false,"dias_sin_resolver":6}
+{"id":"Q-010","fecha":"2026-10-12","cliente":"Pequeña Tienda Doña Chelo","sucursal_receptora":"León","sucursal_origen":"León","canal":"teléfono","mensaje":"Quisiera saber si el papel higiénico de 500 hojas está disponible para recoger hoy.","sentimiento":"neutral","prioridad":"media","resuelto":true,"dias_sin_resolver":0}
+
+# ---------------------------------------------------------------------------
+# OBSERVACIONES PARA LA DEMO (esto es lo que un humano debe ver)
+# ---------------------------------------------------------------------------
+# 1. El Hotel Gran Plaza León aparece 4 veces (Q-001 a Q-004) y en TRES canales
+#    distintos: teléfono, WhatsApp y correo.
+#    Antes nadie conectaba los casos porque vivían en silos separados.
+#    Ese es exactamente el hallazgo del enunciado: "Un hotel reclamó 4 veces por
+#    el mismo retraso y nadie conectó los casos."
+#    Con el historial central el asistente puede responder:
+#    "Este cliente ha reportado 4 incidencias, 2 sin resolver."
+#
+# 2. Q-007 es POSITIVA. Es importante no tratar todo como negativo: el
+#    principio de Confiabilidad exige que el sistema no exagere el riesgo.
+#
+# 3. Q-004 menciona explícitamente la inequidad de precios entre sucursales.
+#    Es la evidencia directa de por qué se unificó el precio de lista en el
+#    catálogo (y el precio oficial es el más bajo de la red).
+#
+# 4. Q-008 pide la política de devoluciones "porque me dieron tres versiones
+#    distintas". Es la evidencia de por qué el agente solo cita la versión
+#    VIGENTE y descarta las obsoletas.

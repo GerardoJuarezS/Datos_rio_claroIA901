@@ -1,0 +1,48 @@
+# Normalización de finales de línea por tipo de archivo.
+#
+# POR QUÉ EXISTE ESTE ARCHIVO
+#
+# Git en Windows convierte los finales de línea a CRLF por defecto. Para un
+# archivo .sh eso es fatal: App Service (Linux) falla con un error confuso del
+# tipo "bad interpreter: No such file or directory", y el estudiante no tiene
+# forma de saber que el problema eran dos bytes invisibles al final de cada
+# línea.
+#
+# Aquí se fuerza LF para los scripts de shell y se normaliza todo lo demás.
+# Hay además una comprobación automática en tools/verificar_todo.py que detecta
+# el problema aunque este archivo se pierda.
+
+# Por defecto: normalizar a LF en el repositorio.
+* text=auto eol=lf
+
+# Scripts de shell: SIEMPRE LF. Sin excepciones.
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Archivos de Python: siempre LF (evita sorpresas en App Service).
+*.py text eol=lf
+
+# Configuración y documentación: LF.
+*.toml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.csv text eol=lf
+*.jsonl text eol=lf
+*.env text eol=lf
+.env.example text eol=lf
+
+# Los PDF y las imágenes son binarios: Git no debe tocarlos.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.zip binary
+
+# Los archivos de fuentes también son binarios.
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary

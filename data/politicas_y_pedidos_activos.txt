@@ -1,0 +1,81 @@
+# POLÍTICAS INTERNAS Y PEDIDOS ACTIVOS — RÍO CLARO
+# Fuente de verdad para políticas. Las versiones obsoletas se conservan
+# marcadas como OBSOLETAS para auditoría (el agente NO debe citarlas).
+
+## POLÍTICA DE DEVOLUCIONES
+Version: 3
+Vigente desde: 2026-09-01
+Estado: VIGENTE
+
+Se aceptan devoluciones dentro de 30 días naturales a partir de la fecha de
+factura, siempre que:
+  - Se presente la factura original o el folio.
+  - El producto no haya sido abierto y conserve el sello.
+  - El motivo sea producto dañado, caducado o error de surtido.
+
+Las devoluciones por error de pedido del cliente se aceptan solo dentro de
+7 días naturales y generan una nota de crédito, no un reembolso en efectivo.
+
+Toda devolución mayor a $5,000.00 MXN requiere autorización de la gerencia
+de la sucursal de origen del pedido.
+
+---
+Version: 2
+Vigente: 2024-03-01 a 2026-08-31
+Estado: OBSOLETA — NO CITAR
+(Esta versión decía 15 días naturales. Fue reemplazada por la versión 3.)
+
+---
+Version: 1
+Vigente: 2019-01-01 a 2024-02-29
+Estado: OBSOLETA — NO CITAR
+(Esta versión no contemplaba notas de crédito.)
+
+## POLÍTICA DE ATENCIÓN A CLIENTES
+Version: 1
+Vigente desde: 2026-01-15
+Estado: VIGENTE
+
+Toda consulta de cliente debe recibir respuesta en un máximo de 15 minutos
+durante horario de operación (L-V 8:00 a 19:00, S 9:00 a 14:00).
+
+Si el pedido salió de una sucursal distinta a la que recibe la llamada, la
+sucursal receptora es responsable de dar seguimiento hasta el cierre. No se
+permite la práctica de "prometer devolver la llamada".
+
+Toda queja debe quedar registrada en la bitácora central el mismo día.
+
+## POLÍTICA DE PRECIOS
+Version: 2
+Vigente desde: 2026-09-01
+Estado: VIGENTE
+
+El precio de lista es único para toda la red. Ninguna sucursal puede cobrar
+por encima del precio de lista oficial publicado en el catálogo unificado.
+Las promociones locales requieren autorización de la dirección general.
+
+## POLÍTICA DE AUTORIZACIÓN DE PAGOS
+Version: 1
+Vigente desde: 2026-09-01
+Estado: VIGENTE
+
+Ningún pago a proveedor se ejecuta sin la aprobación de la persona responsable
+de cuentas por pagar (Laura). El sistema puede extraer y sugerir el monto, pero
+la aprobación es siempre humana.
+
+Si la confianza de extracción del documento es menor al 80%, el documento se
+marca como DUDOSO y se detiene el flujo hasta su revisión manual.
+
+Facturas duplicadas (mismo proveedor, mismo folio y mismo monto) se bloquean
+automáticamente y se escalan a la gerencia.
+
+# ===========================================================================
+# PEDIDOS ACTIVOS
+# ===========================================================================
+# Formato: folio, cliente, sucursal_origen, contenido, estatus, fecha_promesa
+
+PED-498,Restaurante Los Arcos,Sucursal Guadalajara,"20 cajas de jabón de manos 1 L",Entregado 2026-10-14,
+PED-501,Hotel Gran Plaza León,Sucursal Querétaro,"50 cajas de papel higiénico institucional 500 hojas",En tránsito — entrega hoy 16:00 hrs,2026-10-16
+PED-503,Escuela Secundaria Técnica 12,Sucursal Zapopan,"15 garrafas de Fabuloso 3 L",En preparación en almacén,2026-10-17
+PED-505,Hotel Gran Plaza León,Sucursal Querétaro,"30 botellas de limpiador multiusos limón",Pendiente de surtir — sin existencia en Querétaro,2026-10-19
+PED-507,Pequeña Tienda Doña Chelo,Sucursal León,"10 paquetes de papel higiénico 500 hojas",En tránsito desde Aguascalientes,2026-10-18
