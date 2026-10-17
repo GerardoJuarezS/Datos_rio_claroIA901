@@ -5,7 +5,7 @@
 
 | | |
 |---|---|
-| **Estudiante** | <!-- SU NOMBRE COMPLETO --> |
+| **Estudiante** | Gerardo Juárez Salmorán |
 | **Modalidad** | Individual |
 | **Fecha de entrega** | Viernes 6 de noviembre de 2026 |
 | **Enlace al prototipo** | **https://rioclaro-ai901.azurewebsites.net** |
@@ -47,9 +47,15 @@ por ordenar la fuente de verdad y solo después construye la IA encima.
 
 ## 2. La solución
 
-Construimos una aplicación web en Azure con seis módulos que cubren las cinco
-cargas de trabajo del examen AI-901, y resolvemos con ella las preocupaciones de
-los cinco personajes del caso.
+Construimos una aplicación web en Azure, organizada en **ocho tareas** que cubren
+las cinco cargas de trabajo del examen AI-901, y resolvemos con ella las
+preocupaciones de los cinco personajes del caso.
+
+La organización es deliberada: la aplicación **no** se divide por servicio de
+Azure («asistente», «visión», «extracción») sino por **lo que la persona
+necesita hacer**. El enunciado pide que la use gente de bodega y ventas, algunos
+solo desde el celular o por voz; alguien así no busca «Content Understanding»,
+busca saber cuánto cloro queda.
 
 ### 2.1 Enlace al prototipo
 
@@ -109,34 +115,38 @@ curl https://rioclaro-ai901.azurewebsites.net/_stcore/health
 | Key Vault | Guardar los secretos | Privacidad y seguridad |
 | App Service + identidad administrada | Publicar la liga sin claves en el código | Gobernanza |
 
-### 2.3 Los seis módulos
+### 2.3 Las ocho tareas del portal
 
-| Módulo | Qué resuelve | Personaje |
+La aplicación **no se organiza por servicio de Azure**, sino por tarea. Quien la
+usa no necesita saber que existe «Content Understanding» para subir una factura.
+
+| Tarea en el portal | Qué resuelve | Personaje |
 |---|---|---|
-| 1. Asistente | Consultas en minutos, con cita de la fuente | Mariana, Don Ernesto |
-| 2. Facturas | Detección de pagos duplicados y revisión humana | Laura |
-| 3. Quejas | Priorización por SLA de 15 minutos e historial central | Mariana |
-| 4. Voz y visión | Preguntar hablando desde el celular y leer fotos | Toño |
-| 5. Reporte y seguridad | Cifras unificadas y controles de acceso | Don Ernesto, Carlos |
-| 6. IA responsable | Evidencia de los seis principios | Todos |
+| 💬 Preguntar algo | Consultas en minutos, con cita de la fuente | Mariana, Don Ernesto |
+| 📄 Revisar facturas | Detección de pagos duplicados y revisión humana | Laura |
+| 📢 Atender quejas | Priorización por SLA de 15 minutos e historial central | Mariana |
+| 🎙️ Hablar por voz | Preguntar hablando desde el celular | Toño |
+| 📈 Ver el reporte de ventas | Cifras unificadas de las 5 sucursales | Don Ernesto |
+| 💰 Entender el costo | Cuánto cuesta el piloto y cómo se apaga | Don Ernesto |
+| 🛡️ Comprobar el sistema | Estado de Azure, secretos y accesos | Carlos |
+| ✅ Cómo usamos la IA | Evidencia de los seis principios | Todos |
+
+La portada pide al usuario **quién es** y le muestra solo las tareas de su
+puesto, con la preocupación y la definición de éxito que el enunciado asigna a
+cada personaje.
 
 ---
 
 ## 3. Capturas del prototipo
 
-> **Nota sobre estas capturas.** Se generaron con el **modo demostración**
-> activado (visible en la barra lateral), porque las credenciales de Azure se
-> configuran en el entorno de ejecución. Cada imagen lo advierte en pantalla.
+> **Nota sobre estas capturas.** Se generaron con **Azure conectado**: la barra
+> lateral muestra el estado en verde y la aplicación usa los servicios reales.
+> Cada imagen refleja una ejecución verdadera contra `rioclaro-ai901`.
 >
-> Lo que muestran es real en ambos casos: la recuperación del catálogo
-> unificado, la equidad entre sucursales, la detección de duplicados por
-> contenido, el umbral de confianza, la priorización por SLA y la bitácora de
-> auditoría funcionan sin Azure. Lo que necesita Azure es la extracción con
-> Content Understanding, el agente de Foundry, Speech y AI Language.
->
-> **Antes de entregar**, repita el proceso con sus credenciales:
-> `python tools/generar_capturas_entrega.py` regenera todas las imágenes, y las
-> filas de "Estado de los servicios" deben quedar en ✅ en lugar de ⚠️.
+> Si vuelve a desplegar, `python tools/generar_capturas_entrega.py` regenera
+> todas las imágenes. El script detecta si hay credenciales y, si no las hay,
+> avisa de que las capturas saldrían con datos de ejemplo en lugar de
+> presentarlas como reales.
 
 ### 3.1 Estado inicial
 
@@ -467,21 +477,31 @@ El motor está listo para conectarse a Azure.
 
 ### 6.1 Guion de demostración (10 minutos)
 
-| # | Acción | Qué debe verse |
-|---|---|---|
-| 1 | Preguntar «¿Cuánto cloro de litro nos queda?» | Las 5 sucursales, con cita de fuente |
-| 2 | Preguntar «¿Cuánto cloro queda en León?» | Solo León, mismo formato |
-| 3 | Subir `factura_limpia.pdf` | Datos extraídos, pendiente de Laura |
-| 4 | Subir `factura_final2.pdf` | **Pago duplicado bloqueado** |
-| 5 | Subir `factura_monto_borroso.jpg` | **Ningún monto**, revisión humana |
-| 6 | Grabar por voz desde el celular | Transcripción y respuesta en audio |
-| 7 | Ver la bitácora de auditoría | Todo registrado con hora |
-| 8 | Abrir el módulo de IA responsable | Los 6 principios con evidencia |
+Todo se hace **desde el navegador**, en la liga publicada. La barra lateral
+viene plegada y la portada pregunta quién eres: elige a la persona del caso que
+quieras demostrar y verás solo sus tareas.
+
+| # | Dónde | Acción | Qué debe verse |
+|---|---|---|---|
+| 1 | Inicio | Elegir «Toño — Jefe de bodega» | Solo sus dos tareas: voz y asistente |
+| 2 | Preguntar algo | «¿Cuánto cloro de litro nos queda?» | Las 5 sucursales, con cita de fuente |
+| 3 | Preguntar algo | «¿Cuánto cloro queda en León?» | Solo León, mismo formato |
+| 4 | 📄 Revisar facturas | Subir `factura_limpia.pdf` | Datos extraídos, pendiente de Laura |
+| 5 | 📄 Revisar facturas | Subir `factura_final2.pdf` | **Pago duplicado bloqueado** |
+| 6 | 📄 Revisar facturas | Subir `factura_monto_borroso.jpg` | **Ningún monto**, revisión humana |
+| 7 | 🎙️ Hablar por voz | Grabar desde el celular | Transcripción y respuesta en audio |
+| 8 | 📢 Atender quejas | Registrar una queja | Sentimiento, tema y plazo de 15 min |
+| 9 | 🛡️ Comprobar el sistema | Pulsar «Comprobar la conexión con Azure» | Identidad administrada, Key Vault y modelo |
+| 10 | ✅ Cómo usamos la IA | Recorrer la página | Los 6 principios con su evidencia |
+
+Si prefieres ir directo: los tres atajos de la portada (*¿Cuánto cloro queda?*,
+*¿Me pagaron dos veces esta factura?*, *¿Qué pasó con el pedido PED-501?*) llevan
+a la tarea correspondiente sin pasar por el menú.
 
 ### 6.2 Verificación propia
 
 ```bash
-# 0. Todas las comprobaciones de golpe (16 secciones, no necesita Azure)
+# 0. Todas las comprobaciones de golpe (17 secciones, no necesita Azure)
 python tools/verificar_todo.py
 
 # 1. Lógica del negocio y diagnóstico de errores (73 pruebas)
@@ -493,17 +513,25 @@ python tools/probar_app_funcional.py
 # 3. La app con otro directorio de trabajo, como en App Service
 python tools/probar_directorio_trabajo.py
 
-# 4. Que requirements.txt esté completo (12 comprobaciones)
-
+# 4. Que requirements.txt y el paquete de despliegue estén completos (13)
 python tools/verificar_dependencias.py
 
-# 5. Provisionador, antes de ejecutarlo (no toca Azure)
+# 5. Provisionador, antes de ejecutarlo (no toca Azure, 66 pruebas)
 python tools/probar_provision.py
 
-# 6. Conectividad con Azure
+# 6. El flujo de GitHub Actions (24 comprobaciones)
+python tools/verificar_workflow.py
+
+# 7. Este documento contra el enunciado (39 comprobaciones)
+python tools/verificar_entrega.py
+
+# 8. Conectividad con Azure
 python tools/diagnostico_azure.py
 
-# 7. La app en local, para verla con sus ojos
+# 9. La app PUBLICADA, con un navegador real (identidad administrada)
+python tools/probar_despliegue.py
+
+# 10. La app en local, para verla con sus ojos
 streamlit run app.py
 ```
 
@@ -643,7 +671,7 @@ La aplicación se puede **apagar** desde el portal cuando no se usa, lo que
 reduce el costo del App Service a casi cero fuera del horario laboral:
 
 ```bash
-az webapp stop --name SU-APP --resource-group SU-GRUPO
+az webapp stop --name rioclaro-ai901 --resource-group rg-rio-claro-ai901
 ```
 
 ---
@@ -680,7 +708,9 @@ az webapp stop --name SU-APP --resource-group SU-GRUPO
 
 ```
 .
-├── app.py                      Aplicación Streamlit (interfaz y llamadas a Azure)
+├── app.py                      Portada, navegación por tarea y llamadas a Azure
+├── portal.py                   Personas del caso y tareas, en lenguaje del usuario
+├── ui.py                       Estilos, tarjetas y navegación compartidas
 ├── rio_claro.py                Motor del negocio (lógica pura, sin interfaz)
 ├── requirements.txt            Dependencias
 ├── startup.sh                  Arranque en Azure App Service
@@ -696,40 +726,48 @@ az webapp stop --name SU-APP --resource-group SU-GRUPO
 │   ├── capturas/               Capturas de pantalla
 │   └── instrucciones_agente.txt Instrucciones del agente de Foundry
 └── tools/
-    ├── verificar_todo.py       Verificación integral (13 secciones)
-    ├── autotest.py             Verifica la lógica (61 pruebas)
+    ├── verificar_todo.py       Verificación integral (17 secciones)
+    ├── autotest.py             Verifica la lógica (73 pruebas)
     ├── probar_app_funcional.py Prueba la app en un navegador real (54 comprobaciones)
     ├── probar_directorio_trabajo.py  Simula el arranque de App Service
-    ├── probar_provision.py     Prueba el provisionador (50 pruebas, con simulacros)
+    ├── probar_provision.py     Prueba el provisionador (66 pruebas, con simulacros)
+    ├── probar_errores_azure.py Comportamiento cuando Azure falla
     ├── provision_azure.py      Crea los recursos de Azure (multiplataforma)
+    ├── desplegar.py            Empaqueta y despliega en App Service
+    ├── probar_despliegue.py    Prueba la app PUBLICADA con un navegador real
     ├── diagnostico_azure.py    Verifica la conectividad con Azure
+    ├── verificar_entrega.py    Comprueba este documento contra el enunciado
+    ├── verificar_dependencias.py  Paquetes y módulos del paquete de despliegue
+    ├── verificar_workflow.py   El flujo de GitHub Actions
     ├── generar_facturas.py     Genera las facturas de prueba
+    ├── verificar_facturas.py   Comprueba la capa de texto de los PDF
+    ├── capturar_pantallas.py   Automatización del navegador
     └── generar_capturas_entrega.py  Genera las capturas de este documento
 ```
 
 ### Sobre las pruebas automatizadas
 
-El proyecto incluye **309 comprobaciones automatizadas** que no necesitan Azure,
+El proyecto incluye **314 comprobaciones automatizadas** que no necesitan Azure,
 repartidas así:
 
 | Herramienta | Comprobaciones | Qué verifica |
 |---|---|---|
 | `autotest.py` | 73 | La lógica del negocio y el diagnóstico de errores |
 | `probar_app_funcional.py` | 54 | La aplicación en un navegador real |
-| `probar_provision.py` | 67 | El provisionador, con simulacros |
+| `probar_provision.py` | 66 | El provisionador, con simulacros |
 | `verificar_todo.py` | 29 | Estructura, seguridad y arranque |
 | `verificar_workflow.py` | 24 | El flujo de despliegue de GitHub Actions |
-| `verificar_entrega.py` | 36 | Que este documento cumpla el enunciado |
-| `verificar_dependencias.py` | 12 | Que `requirements.txt` esté completo |
+| `verificar_entrega.py` | 39 | Que este documento cumpla el enunciado |
+| `verificar_dependencias.py` | 13 | Que `requirements.txt` y el paquete estén completos |
 | `probar_errores_azure.py` | 9 | El comportamiento con Azure mal configurado |
 | `probar_directorio_trabajo.py` | 7 | El arranque como en App Service |
-| **Total** | **309** | |
+| **Total** | **314** | |
 
 Seis de ellas simulan condiciones reales de despliegue, y encontraron **siete
 errores** que ninguna otra prueba detectaba.
 
-**`probar_app_funcional.py`** abre la aplicación en un navegador, recorre las seis
-pestañas, pulsa los botones y **sube las cuatro facturas de prueba**.
+**`probar_app_funcional.py`** abre la aplicación en un navegador, recorre las
+tareas del portal, pulsa los botones y **sube las cuatro facturas de prueba**.
 
 1. La comprobación de «factura con monto ilegible» buscaba la palabra `borrosa`,
    pero el archivo se llama `factura_monto_borroso.jpg`. El archivo caía en la
