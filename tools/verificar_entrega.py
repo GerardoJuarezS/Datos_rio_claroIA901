@@ -168,19 +168,46 @@ def main() -> int:
     ]
     for principio, pregunta in principios:
         # Se busca el principio con su propia sección de nivel 3
-        tiene_seccion = re.search(
-            rf"^###\s+4\.\d+\s+{re.escape(principio)}", texto, re.M | re.I
+        patron_seccion = re.compile(
+            rf"^###\s+4\.\d+\s+{re.escape(principio)}(.*?)(?=^###\s|\Z)",
+            re.M | re.I | re.S,
         )
+        encontrada = patron_seccion.search(texto)
         revisar(
             f"Tiene una sección propia para {principio}",
-            bool(tiene_seccion),
+            bool(encontrada),
             f"El enunciado pregunta: «{pregunta}»",
         )
+
+        # ------------------------------------------------------------------
+        # La respuesta debe apoyarse en algo CONCRETO del prototipo.
+        #
+        # Antes esta comprobación buscaba la palabra «Evidencia» en todo el
+        # documento. Era una prueba tramposa: bastaba con escribir el epígrafe
+        # «**Evidencia:**» para pasarla, aunque el párrafo no dijera nada. Y si
+        # alguien redactaba con naturalidad, sin el epígrafe, fallaba aunque la
+        # prueba estuviera ahí.
+        #
+        # Ahora se mira CADA sección y se exige que mencione una prueba real:
+        # una captura, un archivo del proyecto, una función concreta o un
+        # resultado de prueba. Eso sí distingue una respuesta sostenida de una
+        # declaración vacía.
+        # ------------------------------------------------------------------
+        cuerpo = encontrada.group(1) if encontrada else ""
+        anclas = (
+            "docs/capturas/",          # una captura concreta
+            "tools/",                  # una prueba ejecutable
+            ".py",                     # una función o módulo del prototipo
+            ".csv", ".jsonl", ".txt",  # un dato del proyecto
+            "configura", "captura", "prueba",  # referencia a la comprobación
+        )
+        tiene_ancla = any(a in cuerpo for a in anclas)
         revisar(
-            f"Responde con EVIDENCIA, no solo con la definición ({principio})",
-            "Evidencia" in texto or "evidencia" in texto,
+            f"Responde con evidencia propia, no con la definición ({principio})",
+            bool(cuerpo) and tiene_ancla,
             "El enunciado pide «reconocer el principio en una situación» con\n"
-            "«evidencia de su propio prototipo».",
+            "«evidencia de su propio prototipo»: una captura, un archivo o una\n"
+            "prueba concreta, no una declaración.",
         )
 
     # Cada principio debería apuntar a una parte concreta del prototipo
